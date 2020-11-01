@@ -38,6 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 .inflate(R.layout.activity_main, parent, false);
 
         return new MyViewHolder(itemView);
+
     }
 
     @Override

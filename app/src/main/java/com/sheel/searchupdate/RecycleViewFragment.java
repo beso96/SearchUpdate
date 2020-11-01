@@ -15,6 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 
@@ -35,6 +40,7 @@ public class RecycleViewFragment extends Fragment {
 
         mAdapter = new MyAdapter();
         createDemoData();
+        ReadCurrentUserData();
 
         mAdapter.setOnListItemClickListener(new MyAdapter.OnListItemClickedListener() {
             @Override
@@ -50,8 +56,19 @@ public class RecycleViewFragment extends Fragment {
 
     }
 
+    private void ReadCurrentUserData() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference(MyConstants.FB_KEY_USERS).child(firebaseUser.getUid());
+
+    }
+
     private void createDemoData() {
     }
+
+
     private void setupRecyclerView(RecyclerView recyclerView) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 

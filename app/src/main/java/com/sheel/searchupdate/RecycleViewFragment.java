@@ -1,9 +1,13 @@
 package com.sheel.searchupdate;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,10 +17,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -24,6 +29,13 @@ import java.util.ArrayList;
 public class RecycleViewFragment extends Fragment {
     private ArrayList<User> mUserInfo;
     private MyAdapter mAdapter;
+    private MediatorInterface mMediatorCallback;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mMediatorCallback = (MediatorInterface) context;
+    }
 
     @Nullable
     @Override
@@ -37,33 +49,92 @@ public class RecycleViewFragment extends Fragment {
 
 
         mAdapter = new MyAdapter();
-        createDemoData();
-        ReadCurrentUserData();
+
 
         mAdapter.setOnListItemClickListener(new MyAdapter.OnListItemClickedListener() {
             @Override
-            public void onListItemClicked(User chat) {
+            public void onListItemClicked(User user) {
+
+                DetailsFragment fragment = new DetailsFragment();
+                fragment.setUser(user);
+                mMediatorCallback.changeFragmentTo(fragment, DetailsFragment.class.getSimpleName());
 
             }
         });
 
 
         recyclerView.setAdapter(mAdapter);
+        ReadCurrentUserData();
+
+
+        EditText etSearch = parentView.findViewById(R.id.etSearch);
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if (charSequence.length() > 0) {
+                    search(charSequence.toString());
+                } else {
+                    mAdapter.update(mUserInfo);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         return parentView;
 
     }
 
     private void ReadCurrentUserData() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference(MyConstants.FB_KEY_USERS).child(firebaseUser.getUid());
+        DatabaseReference myRef = database.getReference(MyConstants.FB_KEY_USERS);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mUserInfo.clear();
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    User value = d.getValue(User.class);
+                    mUserInfo.add(value);
+                }
+
+                mAdapter.update(mUserInfo);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
-    private void createDemoData() {
+
+    void search(String key) {
+
+        ArrayList<User> temp = new ArrayList<>();
+
+        for (User u : mUserInfo) {
+
+            boolean isNameMatched = u.getName().toLowerCase().contains(key.toLowerCase());
+            boolean isPhoneMatched = u.getPhone().toLowerCase().contains(key.toLowerCase());
+            if (isNameMatched || isPhoneMatched) {
+                temp.add(u);
+            }
+        }
+
+        mAdapter.update(temp);
     }
 
 

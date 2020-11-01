@@ -49,6 +49,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.name.setText(userInfo.getName());
         holder.phone.setText(userInfo.getPhone());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onListItemClicked(userInfo);
+                }
+            }
+        });
 
     }
 

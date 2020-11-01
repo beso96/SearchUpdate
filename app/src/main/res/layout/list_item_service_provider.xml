@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".RecycleViewFragment">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginBottom="56dp"
-        tools:listitem="@layout/activity_main" />
 
 
     <TextView
         android:id="@+id/id"
         android:layout_width="139dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:text="Id"
         android:textSize="15dp"
-        tools:layout_editor_absoluteX="29dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="139dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:text="Name"
         android:textSize="15dp"
-        tools:layout_editor_absoluteX="29dp"
-        tools:layout_editor_absoluteY="49dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/id"
+        app:layout_constraintTop_toBottomOf="@+id/id" />
 
     <TextView
         android:id="@+id/phone"
         android:layout_width="138dp"
         android:layout_height="20dp"
+        android:layout_marginStart="32dp"
         android:text="Phone"
-        tools:layout_editor_absoluteX="195dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/id"
+        app:layout_constraintStart_toEndOf="@+id/id"
+        app:layout_constraintTop_toTopOf="@+id/id" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

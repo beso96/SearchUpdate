@@ -1,6 +1,9 @@
 package com.sheel.searchupdate;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,11 +12,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,16 +23,16 @@ import java.util.ArrayList;
 
 public class RecycleViewFragment extends Fragment {
     private ArrayList<User> mUserInfo;
-    private Adapter mAdapter;
+    private MyAdapter mAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         super.onCreateView(inflater, container, savedInstanceState);
-        View parentView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        View parentView = inflater.inflate(R.layout.fragment_recycler, container, false);
         mUserInfo = new ArrayList<>();
 
-        RecyclerView recyclerView = parentView.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = parentView.findViewById(R.id.recycler_view);
         setupRecyclerView(recyclerView);
 
 

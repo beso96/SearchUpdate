@@ -26,7 +26,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
 
-    public void update(mUserInfo newItem) {
+    public void update(User newItem) {
         mUserInfo.add(newItem);
         notifyItemInserted(mUserInfo.indexOf(newItem));
     }
@@ -35,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_main, parent, false);
+                .inflate(R.layout.list_item_service_provider, parent, false);
 
         return new MyViewHolder(itemView);
 
